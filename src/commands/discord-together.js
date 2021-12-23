@@ -1,7 +1,9 @@
 const fetch = require("node-fetch")
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageButton } = require('discord.js');
-const { token } = require("../config.json")
+const {SlashCommandBuilder} = require('@discordjs/builders');
+const {MessageActionRow, MessageButton} = require('discord.js');
+
+const auth = require("../auth")
+
 /*
 //Using dotenv
 const dotenv = require('dotenv').config();
@@ -9,9 +11,9 @@ const dotenv = require('dotenv').config();
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('discord-together')
-    .setDescription('start a discord together activity.')
-    .addStringOption(option => option.setName('activity').setDescription('select an activity').setRequired(true)
+        .setName('discord-together')
+        .setDescription('start a discord together activity.')
+        .addStringOption(option => option.setName('activity').setDescription('select an activity').setRequired(true)
             .addChoice('Poker', '755827207812677713')
             .addChoice('Chess', '832012774040141894')
             .addChoice('Checkers', '832013003968348200')
@@ -25,7 +27,7 @@ module.exports = {
             .addChoice('Puttparty', '763133495793942528')),
 
     async execute(interaction) {
-        if(!interaction.member.voice?.channel) return interaction.reply({ content: 'Connect to a Voice Channel', ephemeral: true });
+        if (!interaction.member.voice?.channel) return interaction.reply({content: 'Connect to a Voice Channel', ephemeral: true});
 
         const activity = interaction.options.getString('activity');
 
@@ -40,23 +42,23 @@ module.exports = {
                 validate: null
             }),
             headers: {
-                Authorization: `Bot ${token}`,
+                Authorization: `Bot ${auth.token}`,
                 //Authorization: `Bot ${process.env.TOKEN}`,
                 "Content-Type": "application/json"
             }
         }).then(res => res.json())
-        .then(invite => {
-            if (!invite.code) return interaction.reply({ content: "An error occured while retrieving data", ephemeral: true })
-            
-            const joinbutton = new MessageActionRow()
-                .addComponents(
-                    new MessageButton()
-                        .setStyle('LINK')
-                        .setLabel('Join Activity')
-                        .setURL(`https://discord.com/invite/${invite.code}`),
-                );
+            .then(invite => {
+                if (!invite.code) return interaction.reply({content: "An error occured while retrieving data", ephemeral: true})
 
-            return interaction.reply({ content: `https://discord.com/invite/${invite.code}`, components: [joinbutton] });
-        })
+                const joinbutton = new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setStyle('LINK')
+                            .setLabel('Join Activity')
+                            .setURL(`https://discord.com/invite/${invite.code}`),
+                    );
+
+                return interaction.reply({content: `https://discord.com/invite/${invite.code}`, components: [joinbutton]});
+            })
     },
 }
