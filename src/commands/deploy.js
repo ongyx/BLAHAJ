@@ -3,9 +3,9 @@ const fs = require("fs");
 const {REST} = require("@discordjs/rest");
 const {Routes} = require("discord-api-types/v9");
 
-const auth = require("../auth")
+const env = require("../env")
 
-const rest = new REST({version: "9"}).setToken(auth.token);
+const rest = new REST({version: "9"}).setToken(env.token);
 
 // create a map of command names to the commands themselves.
 const commands = new Map(
@@ -23,7 +23,7 @@ module.exports = {
     // Register guild commands.
     try {
       await rest.put(
-        Routes.applicationGuildCommands(auth.clientID, auth.guildID),
+        Routes.applicationGuildCommands(env.clientID, env.guildID),
         {body: Array.from(commands.values()).map(c => c.data.toJSON())},
       );
       console.log("Successfully registered application commands.");

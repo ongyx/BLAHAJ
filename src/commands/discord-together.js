@@ -2,12 +2,7 @@ const fetch = require("node-fetch")
 const {SlashCommandBuilder} = require('@discordjs/builders');
 const {MessageActionRow, MessageButton} = require('discord.js');
 
-const auth = require("../auth")
-
-/*
-//Using dotenv
-const dotenv = require('dotenv').config();
-*/
+const env = require("../env")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -42,7 +37,7 @@ module.exports = {
                 validate: null
             }),
             headers: {
-                Authorization: `Bot ${auth.token}`,
+                Authorization: `Bot ${env.token}`,
                 //Authorization: `Bot ${process.env.TOKEN}`,
                 "Content-Type": "application/json"
             }

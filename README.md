@@ -31,17 +31,17 @@ $ git clone https://github.com/ongyx/BLAHAJ && cd BLAHAJ
 $ npm install
 ```
 
-Then, create the file `secrets.json` in the root of this repo.
+Create the file `.env` and fill in the details:
 
-```json
-{
-  "token": "bot_token",
-  "guildID": "server_id",
-  "clientID": "bot_id"
-}
+```
+BOT_MODE=dev
+BOT_TOKEN=<your bot token>
+BOT_CLIENT_ID=<your bot client ID>
+BOT_GUILD_ID=<your test server ID>
 ```
 
-Assuming that the info in `secrets.json` is correct, spin up a local instance with `npm start` and BLAHAJ should be up and running.
+Spin up a local instance with `npm start` and BLAHAJ should be up and running.
+For deployment to something like Heroku, just change `BOT_MODE` to `prod` and copy over the rest.
 
 ## Todo
 
